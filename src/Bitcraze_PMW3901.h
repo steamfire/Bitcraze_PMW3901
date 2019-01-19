@@ -27,19 +27,40 @@
 
 #include <stdint.h>
 
+typedef struct __attribute__((__packed__))
+{
+	uint8_t motion;
+	uint8_t observation;
+	int16_t delta[2];
+	uint8_t squal;
+	uint8_t sum;
+	uint8_t rawMax;
+	uint8_t rawMin;
+	uint8_t shutterUpper;
+	uint8_t shutterLower;
+} Burst;
+
 class Bitcraze_PMW3901 {
 public:
   Bitcraze_PMW3901(uint8_t cspin);
 
-  boolean begin(void);
-
-  void readMotionCount(int16_t *deltaX, int16_t *deltaY);
+  bool begin(void);
+  bool connected() { return state; };
+  
+  Burst* readBurst();
+  Burst* getBurst() { return &burst; };
 
 private:
   uint8_t _cs;
+  uint8_t state = 0;
 
+  Burst burst;
+
+  void open();
+  void close();
   void registerWrite(uint8_t reg, uint8_t value);
   uint8_t registerRead(uint8_t reg);
+  bool registerRead(uint8_t *buf, uint8_t len);
   void initRegisters(void);
 };
 
