@@ -24,9 +24,9 @@
 
 #include <SPI.h>
 
-Bitcraze_PMW3901::Bitcraze_PMW3901(uint8_t cspin)
-  : _cs(cspin)
-{ }
+Bitcraze_PMW3901::Bitcraze_PMW3901(uint8_t cspin) {
+	_cs = cspin;
+}
 
 boolean Bitcraze_PMW3901::begin(void) {
 	if (state) return true;
@@ -40,7 +40,7 @@ boolean Bitcraze_PMW3901::begin(void) {
 
   if (chipId != 0x49 && dIpihc != 0xB8)
   {
-	  Serial.println("No Flow Sensor Found!");
+	  //Serial.println("No Flow Sensor Found!");
 	  return false;
   }
 
@@ -74,7 +74,7 @@ Burst* Bitcraze_PMW3901::readBurst()
 // Low level register access
 void Bitcraze_PMW3901::open()
 {
-	SPI.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE3));
+	SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE3));
 
 	digitalWrite(_cs, LOW);
 }
@@ -212,4 +212,29 @@ void Bitcraze_PMW3901::initRegisters()
   registerWrite(0x4E, 0xA8);
   registerWrite(0x5A, 0x50);
   registerWrite(0x40, 0x80);
+}
+
+void Bitcraze_PMW3901::dump()
+{
+	Serial.print("\tM: ");
+	Serial.print(burst.motion);
+	Serial.print("\tO: ");
+	Serial.print(burst.observation);
+	Serial.print("\tX: ");
+	Serial.print(burst.delta[0]);
+	Serial.print("\tY: ");
+	Serial.print(burst.delta[1]);
+	Serial.print("\tQ: ");
+	Serial.print(burst.squal);
+	Serial.print("\tRS: ");
+	Serial.print(burst.sum);
+	Serial.print("\tRH: ");
+	Serial.print(burst.rawMax);
+	Serial.print("\tRL: ");
+	Serial.print(burst.rawMin);
+	Serial.print("\tSH: ");
+	Serial.print(burst.shutterUpper);
+	Serial.print("\tSL: ");
+	Serial.print(burst.shutterLower);
+	Serial.println();
 }

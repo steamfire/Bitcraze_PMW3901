@@ -50,6 +50,8 @@ public:
   Burst* readBurst();
   Burst* getBurst() { return &burst; };
 
+  void dump();
+
 private:
   uint8_t _cs;
   uint8_t state = 0;
