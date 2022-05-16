@@ -61,7 +61,7 @@ Burst* Bitcraze_PMW3901::readBurst()
 	SPI.transfer(0x16);	//Burst register
 	delayMicroseconds(35);
 
-	for (uint i = 0; i < sizeof(Burst); i++)
+	for (int i = 0; i < sizeof(Burst); i++)
 	{
 		((uint8_t*)(&burst))[i] = SPI.transfer(0x00);
 	}
@@ -121,7 +121,7 @@ bool Bitcraze_PMW3901::registerRead(uint8_t * buf, uint8_t len)
 {
 	open();
 
-	for (uint i = 0; i < len; i++)
+	for (int i = 0; i < len; i++)
 	{
 		SPI.transfer(buf[i] & 0x7F);
 		delayMicroseconds(35);
