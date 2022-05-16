@@ -50,6 +50,8 @@ public:
   Burst* readBurst();
   Burst* getBurst() { return &burst; };
 
+  void setLed(bool ledOn);
+
   void dump();
 
 private:
